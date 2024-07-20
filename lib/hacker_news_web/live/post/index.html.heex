@@ -1,0 +1,43 @@
+<a href={@post.link}>
+  <h1 class="text-xl font-bold inline-block"><%= @post.title %></h1>
+  <span class="text-xs text-stone-400">(<%= @post.link %>)</span>
+</a>
+
+<.form
+  :let={f}
+  for={@form}
+  phx-change="validate"
+  phx-submit="post"
+  class="mt-8 border rounded p-4"
+  data-test="comment_form"
+>
+  <h2 class="mb-2 font-semibold">New comment</h2>
+  <.input field={f[:author]} autofocus placeholder="You name" />
+
+  <.input type="textarea" field={f[:content]} placeholder="Type coment here..." />
+
+  <.button type="submit" class="mt-2">Post</.button>
+</.form>
+
+<h2 class="mt-12 font-semibold">Comments</h2>
+
+<ol>
+  <%= if @comments == [] do %>
+    <li class="text-stone-400">
+      No comments yet, leave the first one...
+    </li>
+  <% end %>
+  <%= for comment <- @comments do %>
+    <li class="mt-4">
+      <span class="text-xs font-bold text-red-800">
+        <%= comment.author %>
+      </span>
+      <span class="text-xs">
+        said at <%= format_timestamp(comment.inserted_at) %>
+      </span>
+      <p>
+        <%= comment.content %>
+      </p>
+    </li>
+  <% end %>
+</ol>

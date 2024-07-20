@@ -1,0 +1,23 @@
+<h1 class="text-xl font-bold inline-block">Create a new post</h1>
+
+<p class="mt-4 text-stone-600">
+  Post an interesting link that people can later comment on.
+</p>
+
+<.form
+  :let={f}
+  for={@form}
+  phx-change="validate"
+  phx-submit="create"
+  class="mt-8"
+  data-test="post_form"
+>
+  <div>
+    <.input field={f[:title]} autofocus label="Title for the link" placeholder="Cool blog post" />
+  </div>
+  <div class="mt-4">
+    <.input field={f[:link]} label="Direct link" placeholder="https://example.org" />
+  </div>
+
+  <.button type="submit" class="mt-4">Post</.button>
+</.form>

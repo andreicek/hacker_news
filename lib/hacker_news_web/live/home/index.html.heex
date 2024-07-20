@@ -1,0 +1,21 @@
+<h1 class="text-xl font-bold">Newest posts</h1>
+
+<ol class="mt-8 list-decimal">
+  <%= for %{post: post, comments_count: comments_count} <- @posts do %>
+    <li class="mt-4">
+      <div>
+        <a class="underline visited:text-stone-400 inline-block font-bold" href={post.link}>
+          <%= post.title %>
+        </a>
+
+        <span class="text-stone-400 text-xs">(<%= post.link %>)</span>
+      </div>
+      <div class="text-xs">
+        <%= format_date(post.inserted_at) %> |
+        <.link navigate={"/post/#{post.id}"} class="hover:underline" data-test="comment_link">
+          comments (<%= comments_count %>)
+        </.link>
+      </div>
+    </li>
+  <% end %>
+</ol>

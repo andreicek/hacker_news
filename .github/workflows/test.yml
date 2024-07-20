@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    services:
+      db:
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        image: postgres:11
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "26.2.4"
+          elixir-version: "1.17.1"
+      - run: "mix deps.get"
+      - name: "Check format"
+        run: "mix format --check-formatted"
+      - name: "Run tests"
+        run: "mix test"
+      - name: "Check coverage"
+        run: "mix test --cover"
